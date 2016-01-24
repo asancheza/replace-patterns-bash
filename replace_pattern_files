@@ -1,9 +1,30 @@
 #!/bin/bash
 
 # Replace 'foo' in any file names with 'bar'
-DIR="tests"
+DIR="examples"
 MATCHES=0
 
+# Parse parameters with help and directory option
+while getopts "d:" opt; do
+  case $opt in
+    d)
+      DIR=$OPTARG
+      ;;
+    h) 
+      echo "Replace files help"
+      echo "Use -d to change the default directory (examples)"
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+# Check files in folder
 for i in `ls $DIR`
 do
   # Replace 'foo' in any file names with 'bar'
@@ -23,6 +44,7 @@ do
   fi
 done
 
+# Print files changed 
 if [[ $MATCHES==1  ]]
 then
   echo "Not existing matches"
